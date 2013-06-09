@@ -84,10 +84,10 @@ static int doublemap_newindex(lua_State *L){
 	return 0;
 }
 
-// Garbage collection finaliser metamethod. Deletes the doublemap object.
+// Garbage collection finaliser metamethod. This should safely delete the object in some way.
 static int doublemap_gc(lua_State *L){
 	doublemap *M = getdoublemap(L, 1);
-	delete M;
+	// delete M; // Only use this if you can be sure the doublemap was created with new.
 	return 0;
 }
 
@@ -101,6 +101,7 @@ static int doublemap_new(lua_State *L){
 static struct luaL_Reg metafuncs[] = {
 	{"__index", doublemap_index},
 	{"__newindex", doublemap_newindex},
+	{"__gc", doublemap_gc},
 	{NULL, NULL}
 };
 
